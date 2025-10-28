@@ -1,0 +1,41 @@
+name: Scheduled Workflow
+
+# This workflow runs on a schedule using cron syntax
+on:
+  schedule:
+    # Run at 2:00 AM UTC every day
+    - cron: '0 2 * * *'
+
+    # Run every 6 hours
+    # - cron: '0 */6 * * *'
+
+    # Run every Monday at 9 AM UTC
+    # - cron: '0 9 * * 1'
+
+  # Allow manual trigger for testing without waiting
+  workflow_dispatch:
+
+jobs:
+  scheduled-task:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show schedule information
+        run: |
+          echo "Scheduled workflow running"
+          echo "Current time (UTC): $(date -u)"
+          echo "Day of week: $(date +%A)"
+          echo "Day of month: $(date +%d)"
+
+      - name: Example scheduled task
+        run: |
+          echo "Performing scheduled maintenance..."
+          echo "This could be:"
+          echo "- Nightly builds"
+          echo "- Database backups"
+          echo "- Cache cleanup"
+          echo "- Report generation"
+          echo "- Dependency updates check"
+
+      - name: Completion message
+        run: echo "Scheduled task completed at $(date -u)"

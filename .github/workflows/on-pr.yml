@@ -1,0 +1,34 @@
+name: On Pull Request
+
+# This workflow runs when pull requests are created or updated
+on:
+  pull_request:
+    branches: [main, develop]
+    types:
+      - opened
+      - synchronize  # New commits pushed
+      - reopened
+      - ready_for_review
+
+jobs:
+  pr-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show PR information
+        run: |
+          echo "Workflow triggered by pull request event"
+          echo "PR number: ${{ github.event.pull_request.number }}"
+          echo "PR title: ${{ github.event.pull_request.title }}"
+          echo "PR author: ${{ github.event.pull_request.user.login }}"
+          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
+          echo "Head branch: ${{ github.event.pull_request.head.ref }}"
+          echo "PR state: ${{ github.event.pull_request.state }}"
+
+      - name: Check if draft
+        if: github.event.pull_request.draft == true
+        run: echo "This is a draft PR"
+
+      - name: Check if ready for review
+        if: github.event.pull_request.draft == false
+        run: echo "This PR is ready for review"

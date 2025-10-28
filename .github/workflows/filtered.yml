@@ -1,0 +1,56 @@
+name: Filtered Workflow
+
+# This workflow demonstrates advanced filtering by paths and branches
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'  # Matches release/v1.0, release/v2.0, etc.
+    paths:
+      # Only run if these files change
+      - 'src/**'
+      - 'tests/**'
+      - 'package.json'
+      - 'requirements.txt'
+    paths-ignore:
+      # Don't run if only these files change
+      - 'docs/**'
+      - '**.md'
+      - '.gitignore'
+
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+
+jobs:
+  filtered-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show what triggered this
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "This workflow only runs when:"
+          echo "- Pushed to main or release/* branches"
+          echo "- Files in src/ or tests/ are changed"
+          echo "- package.json or requirements.txt are changed"
+          echo "- Excludes changes to docs/ and .md files"
+
+      - name: List changed files
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Changed files in this PR:"
+          # Note: In a real PR, you'd use a proper action to get changed files
+          echo "Would show list of changed files here"
+
+      - name: Simulate build
+        run: |
+          echo "Building application..."
+          echo "This workflow focuses on code changes"
+          echo "Documentation-only changes don't trigger it"

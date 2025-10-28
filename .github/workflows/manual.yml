@@ -1,0 +1,62 @@
+name: Manual Workflow
+
+# This workflow can only be triggered manually from the Actions tab
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+          - development
+
+      log_level:
+        description: 'Log level'
+        required: false
+        default: 'info'
+        type: choice
+        options:
+          - debug
+          - info
+          - warning
+          - error
+
+      dry_run:
+        description: 'Perform a dry run'
+        required: false
+        type: boolean
+        default: false
+
+      custom_message:
+        description: 'Custom message'
+        required: false
+        type: string
+        default: 'Hello from manual workflow'
+
+jobs:
+  manual-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show inputs
+        run: |
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Log level: ${{ inputs.log_level }}"
+          echo "Dry run: ${{ inputs.dry_run }}"
+          echo "Custom message: ${{ inputs.custom_message }}"
+
+      - name: Simulate deployment
+        run: |
+          echo "Deploying to ${{ inputs.environment }}..."
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "DRY RUN: No actual changes will be made"
+          else
+            echo "Performing actual deployment"
+          fi
+
+      - name: Show completion
+        run: echo "Manual workflow completed successfully!"
