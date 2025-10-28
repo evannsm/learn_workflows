@@ -1,0 +1,31 @@
+name: Hello Workflow
+
+# Trigger on every push to any branch
+on: [push]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Say hello
+        run: echo "Hello from GitHub Actions!"
+
+      - name: Show date
+        run: date
+
+      - name: List files
+        run: ls -la
+
+      - name: Multi-line command
+        run: |
+          echo "You can run multiple commands"
+          echo "Each on a new line"
+          echo "Using the pipe | character"
+
+      - name: Show runner information
+        run: |
+          echo "OS: $(uname -s)"
+          echo "Kernel: $(uname -r)"
+          echo "CPU cores: $(nproc)"
+          echo "Memory: $(free -h | grep Mem | awk '{print $2}')"
